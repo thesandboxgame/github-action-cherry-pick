@@ -23,6 +23,10 @@ EOF
   git_cmd git config --global user.name "$GITHUB_ACTOR"
 }
 
+git_setup
+git_cmd git remote update
+git_cmd git fetch --all
+
 PR_BRANCH="auto-$INPUT_PR_BRANCH-$GITHUB_SHA"
 MESSAGE_LOG=$(git log -1 $GITHUB_SHA)
 echo MESSAGE_LOG
@@ -40,9 +44,6 @@ PR_TITLE=$(git log -1 --format="%s" $GITHUB_SHA)
 echo PR_TITLE
 echo "AUTO: '${PR_TITLE}'"
 
-git_setup
-git_cmd git remote update
-git_cmd git fetch --all
 git_cmd git checkout -b "${PR_BRANCH}" origin/"${INPUT_PR_BRANCH}"
 git_cmd git cherry-pick --strategy=recursive -X theirs "${GITHUB_SHA}"
 git_cmd git push -u origin "${PR_BRANCH}"
