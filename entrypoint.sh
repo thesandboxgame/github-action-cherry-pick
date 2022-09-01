@@ -1,5 +1,12 @@
 #!/bin/sh -l
 
+git_cmd() {
+  echo $@
+  if [[ "${DRY_RUN:-false}" == "false" ]]; then
+    eval $@
+  fi
+}
+
 git_setup() {
   cat <<- EOF > $HOME/.netrc
 		machine github.com
@@ -11,17 +18,9 @@ git_setup() {
 EOF
   chmod 600 $HOME/.netrc
 
-  git config --global user.email "$GITBOT_EMAIL"
-  git config --global user.name "$GITHUB_ACTOR"
-  git config --global --add safe.directory /github/workspace
-}
-
-git_cmd() {
-  if [[ "${DRY_RUN:-false}" == "true" ]]; then
-    echo $@
-  else
-    eval $@
-  fi
+  git_cmd git config --global user.email "$GITBOT_EMAIL"
+  git_cmd git config --global user.name "$GITHUB_ACTOR"
+  git_cmd git config --global --add safe.directory /github/workspace
 }
 
 PR_BRANCH="auto-$INPUT_PR_BRANCH-$GITHUB_SHA"
