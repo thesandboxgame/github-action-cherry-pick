@@ -42,10 +42,10 @@ fi
 
 PR_TITLE=$(git log -1 --format="%s" $GITHUB_SHA)
 echo PR_TITLE
-echo "AUTO: '${PR_TITLE}'"
+echo "\"AUTO: ${PR_TITLE}\""
 
 git_cmd git checkout -b "${PR_BRANCH}" origin/"${INPUT_PR_BRANCH}"
 git_cmd git cherry-pick --strategy=recursive -X theirs "${GITHUB_SHA}"
 git_cmd git push -u origin "${PR_BRANCH}"
 echo $PR_TITLE
-git_cmd hub pull-request -b "${INPUT_PR_BRANCH}" -h "${PR_BRANCH}" -l "${INPUT_PR_LABELS}" -a "${GITHUB_ACTOR}" -m "AUTO: '${PR_TITLE}'"
+git_cmd hub pull-request -b "${INPUT_PR_BRANCH}" -h "${PR_BRANCH}" -l "${INPUT_PR_LABELS}" -a "${GITHUB_ACTOR}" -m "\"AUTO: ${PR_TITLE}\""
