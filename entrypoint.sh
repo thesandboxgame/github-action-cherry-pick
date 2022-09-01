@@ -18,9 +18,9 @@ git_setup() {
 EOF
   chmod 600 $HOME/.netrc
 
+  git_cmd git config --global --add safe.directory /github/workspace
   git_cmd git config --global user.email "$GITBOT_EMAIL"
   git_cmd git config --global user.name "$GITHUB_ACTOR"
-  git_cmd git config --global --add safe.directory /github/workspace
 }
 
 PR_BRANCH="auto-$INPUT_PR_BRANCH-$GITHUB_SHA"
